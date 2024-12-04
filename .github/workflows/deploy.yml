@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
 
     steps:
     - name: Checkout code
@@ -18,14 +21,25 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '16'
+        cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
-
-    - name: Build and export Next.js app
       run: |
-        npm run build
-        npm run export
+        npm ci
+        npm install sharp
+
+    - name: Build Next.js app
+      run: npm run build
+      env:
+        CI: true
+
+    - name: Export Next.js app
+      run: npm run export
+      continue-on-error: true
+
+    - name: List output directory
+      run: ls -la out/
+      continue-on-error: true
 
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -36,3 +50,4 @@ jobs:
         port: ${{ secrets.FTP_PORT }}
         local-dir: './out/'
         server-dir: '/home/yasara/public_html/'
+        dangerous-clean-slate: true

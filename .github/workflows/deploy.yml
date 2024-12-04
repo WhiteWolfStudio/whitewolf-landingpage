@@ -59,4 +59,4 @@ jobs:
     - name: List deployed files
       run: |
         echo "Attempting to list deployed files..."
-        curl -u "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}/public_html/"
+        curl -v -u "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}/home/yasara/public_html/"

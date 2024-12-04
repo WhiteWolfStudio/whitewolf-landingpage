@@ -33,10 +33,6 @@ jobs:
       env:
         CI: true
 
-    - name: Export Next.js app
-      run: npm run export
-      continue-on-error: true
-
     - name: List output directory
       run: ls -la out/
       continue-on-error: true

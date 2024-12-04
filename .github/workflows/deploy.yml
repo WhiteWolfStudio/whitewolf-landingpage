@@ -4,40 +4,35 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:   # This enables the manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Set up Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '16'
 
-    # Install dependencies
     - name: Install dependencies
       run: npm install
 
-    # Build Next.js static files
     - name: Build and export Next.js app
       run: |
         npm run build
         npm run export
 
-    # Deploy to cPanel using FTP
     - name: Deploy to cPanel via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: ${{ secrets.FTP_HOST }}  # Your FTP host
-        username: ${{ secrets.FTP_USERNAME }}  # Your FTP username
-        password: ${{ secrets.FTP_PASSWORD }}  # Your FTP password
-        port: ${{ secrets.FTP_PORT }}  # FTP port (usually 21)
-        local-dir: './out'  # Local directory to upload from (Next.js export output)
-        remote-dir: '/home/yasara/public_html'  # Remote directory on cPanel server
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: ${{ secrets.FTP_PORT }}
+        local-dir: './out/'
+        server-dir: '/home/yasara/public_html/'

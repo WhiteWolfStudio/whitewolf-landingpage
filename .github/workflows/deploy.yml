@@ -3,7 +3,7 @@ name: Deploy Next.js to cPanel via FTP
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -33,9 +33,16 @@ jobs:
       env:
         CI: true
 
-    - name: List output directory
-      run: ls -la out/
-      continue-on-error: true
+    - name: Create .htaccess file
+      run: |
+        echo "Options +FollowSymLinks" > ./out/.htaccess
+        echo "RewriteEngine On" >> ./out/.htaccess
+        echo "DocumentRoot /home/yasara/whitewolfstudios.co.za/github/home/yasara/public_html" >> ./out/.htaccess
+        echo "<Directory /home/yasara/whitewolfstudios.co.za/github/home/yasara/public_html>" >> ./out/.htaccess
+        echo "    Options Indexes FollowSymLinks" >> ./out/.htaccess
+        echo "    AllowOverride All" >> ./out/.htaccess
+        echo "    Require all granted" >> ./out/.htaccess
+        echo "</Directory>" >> ./out/.htaccess
 
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
@@ -47,3 +54,9 @@ jobs:
         local-dir: './out/'
         server-dir: '/home/yasara/public_html/'
         dangerous-clean-slate: true
+        log-level: verbose
+
+    - name: List deployed files
+      run: |
+        echo "Attempting to list deployed files..."
+        curl -u "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}/public_html/"

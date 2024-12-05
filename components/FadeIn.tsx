@@ -15,13 +15,14 @@ export default function FadeIn({ children, className = '', stagger = false }: Fa
 
   useEffect(() => {
     const element = elementRef.current
+    let observer: IntersectionObserver | null = null
     
     if (element) {
       element.classList.remove('appear')
     }
 
     const timeout = setTimeout(() => {
-      const observer = new IntersectionObserver(
+      observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -38,16 +39,14 @@ export default function FadeIn({ children, className = '', stagger = false }: Fa
       if (element) {
         observer.observe(element)
       }
-
-      return () => {
-        if (element) {
-          observer.unobserve(element)
-        }
-      }
     }, 100)
 
     return () => {
       clearTimeout(timeout)
+      if (observer && element) {
+        observer.unobserve(element)
+        observer.disconnect()
+      }
     }
   }, [pathname])
 

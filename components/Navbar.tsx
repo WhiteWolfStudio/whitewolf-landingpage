@@ -1,14 +1,20 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const Navbar = () => {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   
+  // Close menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
+  
   const isActive = (path: string) => {
-    return pathname === path ? 'text-white' : 'text-gray-300'
+    // Handle both with and without trailing slash
+    return pathname === path || pathname === `${path}/` ? 'text-white' : 'text-gray-300'
   }
 
   return (

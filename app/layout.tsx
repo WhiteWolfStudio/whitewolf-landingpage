@@ -9,6 +9,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://whitewolfstudios.co.za'),
   title: 'White Wolf Studios',
   description: 'Professional software development and design services',
   icons: {

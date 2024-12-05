@@ -52,11 +52,11 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         port: ${{ secrets.FTP_PORT }}
         local-dir: './out/'
-        server-dir: '/home/yasara/public_html/'
+        server-dir: '/public_html/'
         dangerous-clean-slate: true
         log-level: verbose
 
     - name: List deployed files
       run: |
         echo "Attempting to list deployed files..."
-        curl -v -u "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}/home/yasara/public_html/"
+        curl -v -u "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" "ftp://${{ secrets.FTP_HOST }}:${{ secrets.FTP_PORT }}/public_html/"

@@ -52,7 +52,6 @@ Your GitHub workflow is already configured to automatically deploy to cPanel whe
 │   ├── page.tsx          # Main landing page
 │   └── globals.css       # Global styles
 ├── components/
-│   ├── AnimatedBackground.tsx  # Particle animation
 │   ├── Navbar.tsx             # Navigation bar
 │   ├── Hero.tsx               # Hero section with logo
 │   ├── Services.tsx           # Services showcase

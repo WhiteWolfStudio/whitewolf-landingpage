@@ -1,54 +1,24 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const logoOpacity = useTransform(scrollY, [0, 100], [1, 0]);
+
   return (
     <section
       id="home"
       className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16"
     >
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black pointer-events-none z-[1]" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
-          {/* Animated Logo */}
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{
-              type: 'spring',
-              stiffness: 100,
-              damping: 15,
-              duration: 1
-            }}
-            className="mb-12 inline-block"
-          >
-            <motion.div
-              animate={{
-                filter: [
-                  'drop-shadow(0 0 20px rgba(255, 255, 255, 0.3))',
-                  'drop-shadow(0 0 40px rgba(255, 255, 255, 0.5))',
-                  'drop-shadow(0 0 20px rgba(255, 255, 255, 0.3))',
-                ],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-            >
-              <Image
-                src="/images/logo.png"
-                alt="White Wolf Studios"
-                width={280}
-                height={280}
-                priority
-              />
-            </motion.div>
-          </motion.div>
+          {/* Spacer for logo */}
+          <div className="h-[280px] mb-12" />
 
           {/* Main Heading */}
           <motion.h1

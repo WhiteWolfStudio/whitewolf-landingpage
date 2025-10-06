@@ -1,109 +1,84 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 export default function AnimatedBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles: Array<{
-      x: number;
-      y: number;
-      dx: number;
-      dy: number;
-      size: number;
-    }> = [];
-
-    const particleCount = 80;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2,
-      });
-    }
-
-    function animate() {
-      if (!ctx || !canvas) return;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw gradient
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        0,
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width / 2
-      );
-      gradient.addColorStop(0, 'rgba(20, 20, 30, 0.8)');
-      gradient.addColorStop(1, 'rgba(10, 10, 10, 0.9)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach((particle, i) => {
-        particle.x += particle.dx;
-        particle.y += particle.dy;
-
-        if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(200, 200, 220, 0.3)';
-        ctx.fill();
-
-        // Draw connections
-        particles.slice(i + 1).forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 120) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(200, 200, 220, ${0.15 * (1 - distance / 120)})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-      });
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  // Transform values based on scroll position
+  const scale = useTransform(scrollY, [0, 1200], [1, 3]);
+  const opacity = useTransform(scrollY, [0, 1200], [1, 0.15]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
-    />
+    <div className="fixed inset-0 pointer-events-none z-0">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex justify-center items-start pt-16 h-screen">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{
+              type: 'spring',
+              stiffness: 100,
+              damping: 15,
+              duration: 1
+            }}
+            className="mt-[calc((100vh-280px)/2-10rem)]"
+            style={{
+              scale,
+              opacity,
+            }}
+          >
+            <div className="relative" style={{ width: 280, height: 280 }}>
+              <div className="relative overflow-hidden" style={{ width: 280, height: 280 }}>
+                {/* Base logo */}
+                <Image
+                  src="/images/logo.png"
+                  alt="Background"
+                  width={280}
+                  height={280}
+                  priority
+                  style={{ position: 'relative', zIndex: 1 }}
+                />
+
+                {/* Shimmer layer - uses the logo as a mask */}
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    WebkitMaskImage: 'url(/images/logo.png)',
+                    WebkitMaskSize: 'contain',
+                    WebkitMaskRepeat: 'no-repeat',
+                    WebkitMaskPosition: 'center',
+                    maskImage: 'url(/images/logo.png)',
+                    maskSize: 'contain',
+                    maskRepeat: 'no-repeat',
+                    maskPosition: 'center',
+                    zIndex: 2,
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <motion.div
+                    className="h-full w-[100px]"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)',
+                      transform: 'skewX(-20deg)',
+                    }}
+                    animate={{
+                      x: [-150, 430],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                      repeatDelay: 1,
+                    }}
+                  />
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
   );
 }

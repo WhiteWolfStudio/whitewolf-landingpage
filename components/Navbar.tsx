@@ -1,134 +1,80 @@
-'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+'use client';
 
-const Navbar = () => {
-  const pathname = usePathname()
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  
-  // Close menu when route changes
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
-    setIsMenuOpen(false)
-  }, [pathname])
-  
-  const isActive = (path: string) => {
-    // Handle both with and without trailing slash
-    return pathname === path || pathname === `${path}/` ? 'text-white' : 'text-gray-300'
-  }
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { name: 'Home', href: '#home' },
+    { name: 'Services', href: '#services' },
+    { name: 'About', href: '#about' },
+    { name: 'Contact', href: '#contact' },
+  ];
 
   return (
-    <nav className="bg-gray-900 p-4 fixed w-full top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-lg md:text-xl font-bold text-white hover:text-gray-200 transition-colors">
-          White Wolf Studio
-        </Link>
-        
-        {/* Hamburger menu button */}
-        <button 
-          className="md:hidden text-white"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <svg 
-            className="w-6 h-6" 
-            fill="none" 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            strokeWidth="2" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            {isMenuOpen ? (
-              <path d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-black/80 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link href="#home" className="flex items-center space-x-3 group">
+            <motion.div
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+            >
+              <Image
+                src="/images/logo.png"
+                alt="White Wolf Studios"
+                width={40}
+                height={40}
+              />
+            </motion.div>
+            <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+              White Wolf Studios
+            </span>
+          </Link>
 
-        {/* Desktop menu */}
-        <ul className="hidden md:flex space-x-6">
-          <li>
-            <Link 
-              href="/" 
-              className={`${isActive('/')} hover:text-white transition-colors`}
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/about" 
-              className={`${isActive('/about')} hover:text-white transition-colors`}
-            >
-              About Us
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/contact" 
-              className={`${isActive('/contact')} hover:text-white transition-colors`}
-            >
-              Contact
-            </Link>
-          </li>
-          <li>
-            <Link 
-              href="/software" 
-              className={`${isActive('/software')} hover:text-white transition-colors`}
-            >
-              Our Software
-            </Link>
-          </li>
-        </ul>
-
-        {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="absolute top-full left-0 right-0 bg-gray-900 md:hidden">
-            <ul className="flex flex-col px-4 py-2">
-              <li className="py-2">
-                <Link 
-                  href="/" 
-                  className={`${isActive('/')} hover:text-white transition-colors block`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="py-2">
-                <Link 
-                  href="/about" 
-                  className={`${isActive('/about')} hover:text-white transition-colors block`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About Us
-                </Link>
-              </li>
-              <li className="py-2">
-                <Link 
-                  href="/contact" 
-                  className={`${isActive('/contact')} hover:text-white transition-colors block`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-              </li>
-              <li className="py-2">
-                <Link 
-                  href="/software" 
-                  className={`${isActive('/software')} hover:text-white transition-colors block`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Our Software
-                </Link>
-              </li>
-            </ul>
+          <div className="hidden md:flex space-x-8">
+            {navItems.map((item, index) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="relative text-gray-300 hover:text-white transition-colors group"
+              >
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-white to-gray-400 group-hover:w-full transition-all duration-300" />
+              </Link>
+            ))}
           </div>
-        )}
+
+          <motion.a
+            href="#contact"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="hidden md:block px-6 py-2 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white rounded-full border border-gray-700 transition-all duration-300"
+          >
+            Get Started
+          </motion.a>
+        </div>
       </div>
-    </nav>
-  )
+    </motion.nav>
+  );
 }
-
-export default Navbar
-

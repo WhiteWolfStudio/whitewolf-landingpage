@@ -1,61 +1,49 @@
-'use client'
+'use client';
 
-import { useEffect, useRef } from 'react'
-import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion';
+import { ReactNode } from 'react';
 
 interface FadeInProps {
-  children: React.ReactNode
-  className?: string
-  stagger?: boolean
+  children: ReactNode;
+  delay?: number;
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
+  className?: string;
 }
 
-export default function FadeIn({ children, className = '', stagger = false }: FadeInProps) {
-  const elementRef = useRef<HTMLDivElement>(null)
-  const pathname = usePathname()
-
-  useEffect(() => {
-    const element = elementRef.current
-    let observer: IntersectionObserver | null = null
-    
-    if (element) {
-      element.classList.remove('appear')
-    }
-
-    const timeout = setTimeout(() => {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('appear')
-            }
-          })
-        },
-        {
-          threshold: 0.1,
-          rootMargin: '50px',
-        }
-      )
-
-      if (element) {
-        observer.observe(element)
-      }
-    }, 100)
-
-    return () => {
-      clearTimeout(timeout)
-      if (observer && element) {
-        observer.unobserve(element)
-        observer.disconnect()
-      }
-    }
-  }, [pathname])
+export default function FadeIn({
+  children,
+  delay = 0,
+  direction = 'up',
+  className = ''
+}: FadeInProps) {
+  const directions = {
+    up: { y: 40, x: 0 },
+    down: { y: -40, x: 0 },
+    left: { x: 40, y: 0 },
+    right: { x: -40, y: 0 },
+    none: { x: 0, y: 0 },
+  };
 
   return (
-    <div
-      ref={elementRef}
-      className={`${stagger ? 'stagger-fade-in' : 'fade-in-section'} ${className}`}
+    <motion.div
+      initial={{
+        opacity: 0,
+        ...directions[direction]
+      }}
+      whileInView={{
+        opacity: 1,
+        x: 0,
+        y: 0
+      }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{
+        duration: 0.7,
+        delay,
+        ease: [0.21, 0.45, 0.27, 0.9]
+      }}
+      className={className}
     >
       {children}
-    </div>
-  )
-} 
+    </motion.div>
+  );
+}

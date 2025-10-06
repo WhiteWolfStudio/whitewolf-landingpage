@@ -17,10 +17,7 @@ export default function AnimatedBackground() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{
-              duration: 5,
-              ease: 'easeOut'
-            }}
+            transition={{ duration: 0.8 }}
             className="mt-[calc((100vh-280px)/2-10rem)]"
             style={{
               scale,

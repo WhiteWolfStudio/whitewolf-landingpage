@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# White Wolf Studios - Landing Page
+
+A beautiful, modern landing page for White Wolf Studios featuring stunning Framer Motion animations and a bold design.
+
+## Features
+
+- **Animated Logo Showcase** - Your wolf logo takes center stage with pulsing glow effects
+- **Smooth Scroll Navigation** - Seamless navigation between sections
+- **Beautiful Framer Motion Animations** - Every element comes to life with carefully crafted animations
+- **Particle Background** - Dynamic animated background with particle connections
+- **Responsive Design** - Looks amazing on all devices
+- **Services Section** - Showcases Mobile Apps, Web Apps, and AI Solutions with interactive cards
+- **About Section** - Company story with animated statistics
+- **Contact Section** - Easy-to-find contact information with animated elements
+
+## Tech Stack
+
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Type-safe code
+- **Framer Motion** - Powerful animation library
+- **Tailwind CSS** - Utility-first styling
+- **Static Export** - Optimized for cPanel deployment
 
 ## Getting Started
 
-First, run the development server:
+### Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+The static site will be exported to the `out/` directory, ready for deployment.
 
-To learn more about Next.js, take a look at the following resources:
+### Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Your GitHub workflow is already configured to automatically deploy to cPanel when you push to the master branch.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+├── app/
+│   ├── layout.tsx        # Root layout
+│   ├── page.tsx          # Main landing page
+│   └── globals.css       # Global styles
+├── components/
+│   ├── Navbar.tsx             # Navigation bar
+│   ├── Hero.tsx               # Hero section with logo
+│   ├── Services.tsx           # Services showcase
+│   ├── About.tsx              # About section
+│   ├── Contact.tsx            # Contact & footer
+│   └── FadeIn.tsx             # Reusable animation wrapper
+└── public/
+    └── images/
+        └── logo.png           # Your wolf logo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Customization
+
+- **Colors**: Edit `tailwind.config.ts` and `app/globals.css`
+- **Content**: Update text in component files
+- **Animations**: Adjust Framer Motion parameters in components
+- **Logo**: Replace `public/images/logo.png` with your updated logo
+
+## Performance
+
+- Optimized static build
+- Lazy loading animations
+- Minimal JavaScript bundle
+- Fast First Contentful Paint (FCP)
+
+---
+
+Built with passion by White Wolf Studios

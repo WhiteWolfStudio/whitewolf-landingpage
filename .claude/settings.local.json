@@ -1,8 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(npx create-next-app:*)"
-    ],
+    "allow": [],
     "deny": [],
     "ask": []
   }

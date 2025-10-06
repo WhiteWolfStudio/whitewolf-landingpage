@@ -55,10 +55,16 @@ export default function Services() {
               <motion.div
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
-                className="group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border border-gray-800 hover:border-gray-600 transition-all duration-200 h-full"
+                className="group relative bg-gradient-to-br from-gray-900 to-black p-8 rounded-2xl border border-gray-800 hover:border-gray-600 transition-all duration-200 h-full overflow-hidden"
               >
                 {/* Glow effect on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Shine effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute w-[200%] h-[200%] bg-gradient-to-br from-transparent via-white/20 to-transparent group-hover:animate-[shine_1.2s_ease-in-out]"
+                       style={{ transform: 'translate(-100%, -100%)' }} />
+                </div>
 
                 <div className="relative z-10">
                   {/* Icon */}

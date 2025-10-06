@@ -49,3 +49,33 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Shine animation */
+@keyframes shine {
+  0% {
+    transform: translate(-100%, -100%);
+  }
+  100% {
+    transform: translate(100%, 100%);
+  }
+}
+
+/* Inverted shine animation (bottom-right to top-left) */
+@keyframes shine-inverted {
+  0% {
+    transform: translate(100%, 100%);
+  }
+  100% {
+    transform: translate(-100%, -100%);
+  }
+}
+
+/* Text shine animation */
+@keyframes text-shine {
+  0% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: -100% -100%;
+  }
+}

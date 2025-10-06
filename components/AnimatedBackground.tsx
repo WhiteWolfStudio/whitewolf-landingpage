@@ -15,13 +15,11 @@ export default function AnimatedBackground() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex justify-center items-start pt-16 h-screen">
           <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{
-              type: 'spring',
-              stiffness: 100,
-              damping: 15,
-              duration: 1
+              duration: 5,
+              ease: 'easeOut'
             }}
             className="mt-[calc((100vh-280px)/2-10rem)]"
             style={{

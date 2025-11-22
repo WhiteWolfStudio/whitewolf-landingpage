@@ -20,12 +20,6 @@ export default function Contact() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Form submission will be handled by Netlify later
-    console.log('Form submitted:', formData);
-  };
-
   return (
     <section id="contact" className="py-20 md:py-32 relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +43,7 @@ export default function Contact() {
                 <div className="relative z-10">
                   <h3 className="text-2xl font-bold text-white mb-6">Send us a message</h3>
 
-                  <form onSubmit={handleSubmit} className="space-y-6" data-netlify="true">
+                  <form className="space-y-6" data-netlify="true">
                     {/* Name Input */}
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">

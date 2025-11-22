@@ -49,7 +49,7 @@ export default function Contact() {
                 <div className="relative z-10">
                   <h3 className="text-2xl font-bold text-white mb-6">Send us a message</h3>
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-6" netlify>
                     {/* Name Input */}
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">

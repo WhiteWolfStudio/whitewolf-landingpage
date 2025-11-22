@@ -12,13 +12,27 @@ function ProjectCard({ project }: {
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const handleClick = () => {
+    if (project.status === 'live') {
+      window.open(project.url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <div
       className={`group relative bg-gradient-to-br from-gray-900 to-black rounded-2xl border w-96 flex-shrink-0 overflow-hidden transition-all duration-300 ${
         isHovered ? 'border-gray-600' : 'border-gray-800'
-      }`}
+      } ${project.status === 'live' ? 'cursor-pointer' : 'cursor-default'}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
+      tabIndex={project.status === 'live' ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (project.status === 'live' && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
     >
       {/* Glow effect on hover */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none" />
